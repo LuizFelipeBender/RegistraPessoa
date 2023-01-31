@@ -53,7 +53,7 @@ namespace RegistraPessoa.Api.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<PessoaVO>> UpdatePessoa([FromForm] PessoaVOtotal pessoaVO)
+        public async Task<ActionResult<PessoaVO>> UpdatePessoa([FromForm] PessoaVO pessoaVO)
         {
             if (pessoaVO == null) return BadRequest();
             var pessoa = await _repository.UpdateAsync(pessoaVO);
@@ -61,8 +61,8 @@ namespace RegistraPessoa.Api.Controllers
         }
 
         [HttpPatch]
-        public async Task<ActionResult<PessoaVO>> UpdatesPessoas([FromForm] ulong id,[FromForm] PessoaVOtotal pessoaVO){
-            if(id >0){
+        public async Task<ActionResult<PessoaVO>> UpdatesPessoas([FromForm] PessoaVOtotal pessoaVO){
+            if(pessoaVO.Id >0){
                 try
                 {
                 var pessoa = await _repository.UpdateAsync(pessoaVO);//
