@@ -3,11 +3,12 @@ using RegistraPessoa.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddHttpClient<IPessoaService, PessoaService>(
-    c => c.BaseAddress = new Uri(builder.Configuration["ServiveUrls:PessoaAPI"])
-);
+// builder.Services.AddHttpClient<IPessoaService, PessoaService>(
+//     c => c.BaseAddress = new Uri(builder.Configuration["ServiveUrls : PessoaAPI"])
+// );
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient<IPessoaService, PessoaService>(c => c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:PessoaAPI"]));
 
 var app = builder.Build();
 

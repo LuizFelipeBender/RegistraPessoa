@@ -19,59 +19,67 @@ namespace RegistraPessoa.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PessoaVO>>> GetAll()
         {
-            var products = await _repository.FindAllAsync();
-            products.Count();
-            if (products.Count() == 0)
+            var pessoas = await _repository.FindAllAsync();
+            pessoas.Count();
+            if (pessoas.Count() == 0)
             {
                 Response.StatusCode = 404;
                 return NotFound(new { msg = "Person not found" });
             }
-            return Ok(products);
+            return Ok(pessoas);
         }
 
 
-        /// <summary>
-        /// Deletes a specific TodoItem.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+      
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById([FromQuery] uint id)
+        public async Task<IActionResult> GetById(ulong id)
         {
-            var product = await _repository.FindById(id);
-            if (product == null)
+            var pessoa = await _repository.FindById(id);
+            if (pessoa == null)
             {
                 Response.StatusCode = 404;
                 return NotFound(new { msg = "Person not found" });
             }
-            return Ok(product);
+            return Ok(pessoa);
         }
 
         [HttpPost]
 
-        public async Task<ActionResult<PessoaVO>> Create([FromForm] PessoaVO productVO)
+        public async Task<ActionResult<PessoaVO>> Create([FromForm] PessoaVO pessoaVO)
         {
-            if (productVO == null) return BadRequest();
-            var product = await _repository.CreateAsync(productVO);
-            return Ok(product);
+            if (pessoaVO == null) return BadRequest();
+            var pessoa = await _repository.CreateAsync(pessoaVO);
+            return Ok(pessoa);
         }
 
         [HttpPut]
-        public async Task<ActionResult<PessoaVO>> UpdatePessoa([FromForm] PessoaVO productVO)
+        public async Task<ActionResult<PessoaVO>> UpdatePessoa([FromForm] PessoaVOtotal pessoaVO)
         {
-            if (productVO == null) return BadRequest();
-            var product = await _repository.UpdateAsync(productVO);
-            return Ok(product);
+            if (pessoaVO == null) return BadRequest();
+            var pessoa = await _repository.UpdateAsync(pessoaVO);
+            return Ok(pessoa);
         }
 
-        /// <summary>
-        /// Deletes a specific TodoItem.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        [HttpPatch]
+        public async Task<ActionResult<PessoaVO>> UpdatesPessoas([FromForm] ulong id,[FromForm] PessoaVOtotal pessoaVO){
+            if(id >0){
+                try
+                {
+                var pessoa = await _repository.UpdateAsync(pessoaVO);//
+                return Ok(pessoa);
+                }
+                catch 
+                {
+                    Response.StatusCode = 400;
+                    return new ObjectResult(new {msg = "Pessoa não encontrada"});
+                   
+                }
+            }
+                    return new ObjectResult(new {msg = "Pessoa não encontrada"});
+        }
         [HttpDelete("{id}")]
 
-        public async Task<ActionResult<PessoaVO>> Delete(uint id)
+        public async Task<ActionResult<PessoaVO>> Delete(ulong id)
         {
             var status = await _repository.DeleteAsync(id);
             if (!status) return BadRequest();
